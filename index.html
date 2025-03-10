@@ -19,6 +19,40 @@
             margin-bottom: 20px;
         }
 
+        /* Menu nawigacyjne */
+        nav {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        nav a {
+            text-decoration: none;
+            color: #444;
+            padding: 10px 20px;
+            margin: 0 10px;
+            border-radius: 4px;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        nav a:hover {
+            background-color: #444;
+            color: #fff;
+        }
+
+        /* Sekcje (domyślnie ukryte) */
+        section {
+            display: none;
+            margin-top: 20px;
+        }
+
+        /* Widoczna sekcja */
+        section.active {
+            display: block;
+        }
+
+        /* Tabela gier */
         table {
             width: 100%;
             border-collapse: collapse;
@@ -29,19 +63,20 @@
 
         th, td {
             padding: 12px;
-            text-align: left;
+            text-align: center; /* Wyśrodkowanie tekstu w poziomie */
+            vertical-align: middle; /* Wyśrodkowanie tekstu w pionie */
             border-bottom: 1px solid #ddd;
         }
 
         th {
-            background-color: #444;
             color: #fff;
             cursor: pointer;
             position: relative;
+            font-weight: bold;
         }
 
         th:hover {
-            background-color: #555;
+            opacity: 0.9; /* Lekkie przyciemnienie po najechaniu */
         }
 
         th::after {
@@ -60,8 +95,17 @@
             content: "▼";
         }
 
+        /* Kolory dla nagłówków kolumn (bardziej stonowane) */
+        th:nth-child(1) { background-color: #5cb85c; } /* NR. - zielony */
+        th:nth-child(2) { background-color: #5bc0de; } /* NAZWA - niebieski */
+        th:nth-child(3) { background-color: #f0ad4e; } /* CENA - pomarańczowy */
+        th:nth-child(4) { background-color: #6f42c1; } /* ZWROTIK? - fioletowy */
+        th:nth-child(5) { background-color: #d9534f; } /* OCENA - czerwony */
+        th:nth-child(6) { background-color: #777; } /* KOMENTARZ - szary */
+        th:nth-child(7) { background-color: #333; } /* AKCJE - ciemny szary */
+
         tr:hover {
-            background-color: #f1f1f1;
+            background-color: #f9f9f9; /* Lekkie podświetlenie wiersza po najechaniu */
         }
 
         .add-game-form {
@@ -94,7 +138,7 @@
         }
 
         .delete-btn {
-            background-color: #ff4d4d;
+            background-color: #d9534f;
             color: #fff;
             border: none;
             padding: 6px 10px;
@@ -103,11 +147,11 @@
         }
 
         .delete-btn:hover {
-            background-color: #cc0000;
+            background-color: #c9302c;
         }
 
         .edit-btn {
-            background-color: #4CAF50;
+            background-color: #5cb85c;
             color: #fff;
             border: none;
             padding: 6px 10px;
@@ -117,11 +161,11 @@
         }
 
         .edit-btn:hover {
-            background-color: #45a049;
+            background-color: #4cae4c;
         }
 
         .save-btn {
-            background-color: #2196F3;
+            background-color: #5bc0de;
             color: #fff;
             border: none;
             padding: 6px 10px;
@@ -131,11 +175,11 @@
         }
 
         .save-btn:hover {
-            background-color: #1e88e5;
+            background-color: #31b0d5;
         }
 
         .cancel-btn {
-            background-color: #f44336;
+            background-color: #f0ad4e;
             color: #fff;
             border: none;
             padding: 6px 10px;
@@ -144,7 +188,25 @@
         }
 
         .cancel-btn:hover {
-            background-color: #e53935;
+            background-color: #ec971f;
+        }
+
+        /* Styl dla zakładki Statystyka */
+        #statistics {
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+        }
+
+        #statistics h2 {
+            color: #444;
+            margin-bottom: 20px;
+        }
+
+        #statistics p {
+            font-size: 1.1em;
+            margin: 10px 0;
         }
     </style>
 </head>
@@ -152,69 +214,79 @@
 
     <h1>Tabela Gier</h1>
 
-    <!-- Formularz do dodawania nowej gry -->
-    <div class="add-game-form">
-        <input type="text" id="gameName" placeholder="Nazwa gry">
-        <input type="number" id="gamePrice" placeholder="Cena (PLN)">
-        <input type="text" id="gameReturn" placeholder="Zwrotik? (TAK/NIE)">
-        <input type="number" id="gameRating" placeholder="Ocena (1-10)">
-        <input type="text" id="gameComment" placeholder="Komentarz">
-        <button onclick="addGame()">Dodaj Grę</button>
-    </div>
+    <!-- Menu nawigacyjne -->
+    <nav>
+        <a href="#" onclick="showSection('games')">Tabela Gier</a>
+        <a href="#" onclick="showSection('statistics')">Statystyka</a>
+    </nav>
 
-    <!-- Tabela z grami -->
-    <table id="gamesTable">
-        <thead>
-            <tr>
-                <th onclick="sortTable(0)">NR.</th>
-                <th onclick="sortTable(1)">NAZWA</th>
-                <th onclick="sortTable(2)">CENA</th>
-                <th onclick="sortTable(3)">ZWROTIK?</th>
-                <th onclick="sortTable(4)">OCENA</th>
-                <th onclick="sortTable(5)">KOMENTARZ</th>
-                <th>AKCJE</th>
-            </tr>
-        </thead>
-        <tbody>
-            <!-- Dane zostaną dodane dynamicznie za pomocą JavaScript -->
-        </tbody>
-    </table>
+    <!-- Sekcja Tabela Gier -->
+    <section id="games" class="active">
+        <!-- Formularz do dodawania nowej gry -->
+        <div class="add-game-form">
+            <input type="text" id="gameName" placeholder="Nazwa gry">
+            <input type="number" id="gamePrice" placeholder="Cena (PLN)">
+            <input type="text" id="gameReturn" placeholder="Zwrotik? (TAK/NIE)">
+            <input type="number" id="gameRating" placeholder="Ocena (1-10)">
+            <input type="text" id="gameComment" placeholder="Komentarz">
+            <button onclick="addGame()">Dodaj Grę</button>
+        </div>
+
+        <!-- Tabela z grami -->
+        <table id="gamesTable">
+            <thead>
+                <tr>
+                    <th onclick="sortTable('id')">NR.</th>
+                    <th onclick="sortTable('name')">NAZWA</th>
+                    <th onclick="sortTable('price')">CENA</th>
+                    <th onclick="sortTable('return')">ZWROTIK?</th>
+                    <th onclick="sortTable('rating')">OCENA</th>
+                    <th onclick="sortTable('comment')">KOMENTARZ</th>
+                    <th>AKCJE</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Dane zostaną dodane dynamicznie za pomocą JavaScript -->
+            </tbody>
+        </table>
+    </section>
+
+    <!-- Sekcja Statystyka -->
+    <section id="statistics">
+        <h2>Statystyka</h2>
+        <p id="averagePrice">Średnia cena gier: <span class="value">0 PLN</span></p>
+        <p id="returnPercentage">Procent gier z zwrotem "TAK": <span class="value">0%</span></p>
+        <p id="averageRating">Średnia ocena gier: <span class="value">0</span></p>
+    </section>
 
     <script>
-        // Początkowe dane tabeli
-        let games = [
-            { name: "Satisfactory", price: 184, return: "TAK", rating: 3, comment: "Nuda" },
-            { name: "Operation Tango", price: 72, return: "NIE", rating: 8, comment: "" },
-            { name: "Police Simulator", price: 120, return: "TAK", rating: 6, comment: "Fajne ale za drogie" },
-            { name: "Pro Soccer Online", price: 36, return: "TAK", rating: 4, comment: "We dwóch ciężko" },
-            { name: "Pico Park", price: 18, return: "TAK", rating: 5, comment: "Nie pamiętam xd" },
-            { name: "BigFoot", price: 74, return: "NIE", rating: 2, comment: "fajne ale za drogie" },
-            { name: "Lethal Company", price: 46, return: "TAK", rating: 7, comment: "" },
-            { name: "Medieval Dynasty", price: 81, return: "TAK", rating: 6, comment: "fajna ale nie nasze klimaty" },
-            { name: "No Fair Play", price: 14, return: "TAK", rating: 1, comment: "SYF KURWA SYF" }
-        ];
+        // Początkowe dane tabeli (pusta tablica)
+        let games = [];
 
         // Funkcja do wyświetlania gier w tabeli
         function renderGames() {
             const tbody = document.querySelector("#gamesTable tbody");
             tbody.innerHTML = ""; // Czyścimy tabelę przed ponownym renderowaniem
 
-            games.forEach((game, index) => {
+            games.forEach((game) => {
                 const row = document.createElement("tr");
                 row.innerHTML = `
-                    <td>${index + 1}</td>
+                    <td>${game.id}</td>
                     <td>${game.name}</td>
                     <td>${game.price} PLN</td>
                     <td>${game.return}</td>
                     <td>${game.rating}</td>
                     <td>${game.comment}</td>
                     <td>
-                        <button class="edit-btn" onclick="editGame(${index})">Edytuj</button>
-                        <button class="delete-btn" onclick="deleteGame(${index})">Usuń</button>
+                        <button class="edit-btn" onclick="editGame(${game.id})">Edytuj</button>
+                        <button class="delete-btn" onclick="deleteGame(${game.id})">Usuń</button>
                     </td>
                 `;
                 tbody.appendChild(row);
             });
+
+            // Aktualizuj statystyki po każdej zmianie w tabeli
+            updateStatistics();
         }
 
         // Funkcja do dodawania nowej gry
@@ -226,7 +298,8 @@
             const comment = document.getElementById("gameComment").value;
 
             if (name && !isNaN(price) && (returnStatus === "TAK" || returnStatus === "NIE") && !isNaN(rating)) {
-                games.push({ name, price, return: returnStatus, rating, comment });
+                const newId = games.length > 0 ? games[games.length - 1].id + 1 : 1; // Generowanie nowego ID
+                games.push({ id: newId, name, price, return: returnStatus, rating, comment });
                 renderGames();
                 // Czyszczenie pól formularza
                 document.getElementById("gameName").value = "";
@@ -240,34 +313,36 @@
         }
 
         // Funkcja do usuwania gry
-        function deleteGame(index) {
-            games.splice(index, 1);
+        function deleteGame(id) {
+            games = games.filter(game => game.id !== id);
             renderGames();
         }
 
         // Funkcja do edycji gry
-        function editGame(index) {
-            const game = games[index];
-            const row = document.querySelector(`#gamesTable tbody tr:nth-child(${index + 1})`);
+        function editGame(id) {
+            const game = games.find(game => game.id === id);
+            const row = document.querySelector(`#gamesTable tbody tr:nth-child(${games.findIndex(g => g.id === id) + 1})`);
             row.innerHTML = `
-                <td>${index + 1}</td>
+                <td>${game.id}</td>
                 <td><input type="text" value="${game.name}"></td>
                 <td><input type="number" value="${game.price}"></td>
                 <td><input type="text" value="${game.return}"></td>
                 <td><input type="number" value="${game.rating}"></td>
                 <td><input type="text" value="${game.comment}"></td>
                 <td>
-                    <button class="save-btn" onclick="saveGame(${index})">Zapisz</button>
+                    <button class="save-btn" onclick="saveGame(${game.id})">Zapisz</button>
                     <button class="cancel-btn" onclick="renderGames()">Anuluj</button>
                 </td>
             `;
         }
 
         // Funkcja do zapisywania edytowanej gry
-        function saveGame(index) {
-            const row = document.querySelector(`#gamesTable tbody tr:nth-child(${index + 1})`);
+        function saveGame(id) {
+            const row = document.querySelector(`#gamesTable tbody tr:nth-child(${games.findIndex(g => g.id === id) + 1})`);
             const inputs = row.querySelectorAll("input");
-            games[index] = {
+            const gameIndex = games.findIndex(game => game.id === id);
+            games[gameIndex] = {
+                id: id,
                 name: inputs[0].value,
                 price: parseFloat(inputs[1].value),
                 return: inputs[2].value.toUpperCase(),
@@ -278,34 +353,64 @@
         }
 
         // Funkcja do sortowania tabeli
-        function sortTable(columnIndex) {
+        function sortTable(key) {
             const sortOrder = document.getElementById("gamesTable").getAttribute("data-sort-order") || "asc";
             const newSortOrder = sortOrder === "asc" ? "desc" : "asc";
             document.getElementById("gamesTable").setAttribute("data-sort-order", newSortOrder);
 
-            if (columnIndex === 0) {
-                // Sortowanie po numerze (indeksie)
-                games.sort((a, b) => {
-                    const indexA = games.indexOf(a);
-                    const indexB = games.indexOf(b);
-                    return newSortOrder === "asc" ? indexA - indexB : indexB - indexA;
-                });
-            } else {
-                // Sortowanie po pozostałych kolumnach
-                const key = Object.keys(games[0])[columnIndex - 1];
-                games.sort((a, b) => {
-                    const valueA = a[key];
-                    const valueB = b[key];
+            games.sort((a, b) => {
+                const valueA = a[key];
+                const valueB = b[key];
 
-                    if (typeof valueA === "string") {
-                        return newSortOrder === "asc" ? valueA.localeCompare(valueB) : valueB.localeCompare(valueA);
-                    } else {
-                        return newSortOrder === "asc" ? valueA - valueB : valueB - valueA;
-                    }
-                });
-            }
+                if (typeof valueA === "string") {
+                    return newSortOrder === "asc" ? valueA.localeCompare(valueB) : valueB.localeCompare(valueA);
+                } else {
+                    return newSortOrder === "asc" ? valueA - valueB : valueB - valueA;
+                }
+            });
 
             renderGames();
+        }
+
+        // Funkcja do aktualizacji statystyk
+        function updateStatistics() {
+            if (games.length === 0) {
+                document.getElementById("averagePrice").querySelector(".value").textContent = "0 PLN";
+                document.getElementById("returnPercentage").querySelector(".value").textContent = "0%";
+                document.getElementById("averageRating").querySelector(".value").textContent = "0";
+                return;
+            }
+
+            // Średnia cena
+            const totalPrice = games.reduce((sum, game) => sum + game.price, 0);
+            const averagePrice = (totalPrice / games.length).toFixed(2);
+            document.getElementById("averagePrice").querySelector(".value").textContent = `${averagePrice} PLN`;
+
+            // Procent gier z zwrotem "TAK"
+            const returnYesCount = games.filter(game => game.return === "TAK").length;
+            const returnPercentage = ((returnYesCount / games.length) * 100).toFixed(2);
+            document.getElementById("returnPercentage").querySelector(".value").textContent = `${returnPercentage}%`;
+
+            // Średnia ocena
+            const totalRating = games.reduce((sum, game) => sum + game.rating, 0);
+            const averageRating = (totalRating / games.length).toFixed(2);
+            document.getElementById("averageRating").querySelector(".value").textContent = averageRating;
+        }
+
+        // Funkcja do przełączania sekcji
+        function showSection(sectionId) {
+            // Ukryj wszystkie sekcje
+            document.querySelectorAll("section").forEach(section => {
+                section.classList.remove("active");
+            });
+
+            // Pokaż wybraną sekcję
+            document.getElementById(sectionId).classList.add("active");
+
+            // Jeśli pokazujemy statystyki, zaktualizuj je
+            if (sectionId === "statistics") {
+                updateStatistics();
+            }
         }
 
         // Inicjalizacja tabeli przy pierwszym załadowaniu strony
